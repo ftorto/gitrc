@@ -1,1 +1,8 @@
 This repository helps me to configure a fresh Git install on any computer.
+
+* Propose to align Git with latest version (by adding PPA on demand)
+* Install git global configuration
+* Modify the prompt (PS1) to get the branch name and additional information from git
+  - think about deactivating any older PS1 configuration
+- Install aliases for `git` command `g`
+- Install completion for git and gitflow
