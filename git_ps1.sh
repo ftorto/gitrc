@@ -35,6 +35,8 @@ __powerline() {
     REVERSE="\[$(tput rev)\]"
     RESET="\[$(tput sgr0)\]"
     BOLD="\[$(tput bold)\]"
+    UNDERLINE="\[$(tput smul)\]"
+    BLINK="\[$(tput blink)\]"
 
     __git_info() {
         [ -x "$(which git)" ] || return    # git not found
@@ -79,7 +81,7 @@ __powerline() {
         [ -f "${gitDir}/BISECT_LOG" ] && marks+="|${BG_ORANGE}${FG_YELLOW}BISECTING${RESET}"
 
         # print the git branch segment without a trailing newline
-        printf "${FG_BLUE}${BOLD}${GIT_BRANCH_SYMBOL} ${BOLD}${branch}${marks} "
+        printf "${FG_BLUE}${BOLD}${GIT_BRANCH_SYMBOL} ${branch}${RESET}${marks} "
     }
 
     ps1() {
