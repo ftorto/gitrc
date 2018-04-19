@@ -24,7 +24,7 @@ then
 fi
 
 # All configuration will be global
-GIT_GLOBAL_CONFIG=1
+export GIT_GLOBAL_CONFIG=1
 
 # Checking minimum git version available
 git --version
@@ -32,7 +32,7 @@ read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git
+  sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git -y
 fi
 
 # Use tsocks when available (company firewall)
