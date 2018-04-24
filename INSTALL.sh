@@ -82,9 +82,20 @@ ln -s $(which git) ${GITRC_PATH}/bin/qg
 ln -s $(pwd)/scripts/fetch_all.sh ${GITRC_PATH}/bin/fall
 
 echo "INF Updating personal gitrc to ~/.bashrc"
-sed -i '/source .*gitrc.sh/d; /Sourcing personal git configuration/d; /export GITRC_PATH/d' ~/.bashrc
+
+# Define patterns to identify the .gitrc configuration part
+startPattern="### BEGIN .GITRC CONFIGURATION ###"
+endPattern="### END .GITRC CONFIGURATION ###"
+
+# Remove previous run
+sed -i "/${startPattern}/,/${endPattern}/d" ~/.bashrc
+
+echo ${startPattern} >> ~/.bashrc
+echo "# DO NOT MODIFY THIS PART MANUALLY" >> ~/.bashrc
 echo "# Sourcing personal git configuration" >> ~/.bashrc
 echo "export GITRC_PATH=${GITRC_PATH}" >> ~/.bashrc
+echo 'export GPG_TTY=$(tty)' >> ~/.bashrc
 echo "source ${GITRC_PATH}/gitrc.sh" >> ~/.bashrc
+echo ${endPattern} >> ~/.bashrc
 
 echo "INF Git install completed"
