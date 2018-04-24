@@ -12,7 +12,8 @@ then
   # AUTH
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.name "${GIT_USER_NAME}"
   git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.username "${GIT_CRED_NAME:-$GIT_USER_NAME}"
-  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper cache
+  # cache passwords for 31 days
+  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper 'cache --timeout=2678400'
 else
   echo "INF Please set up your configuration in config.env file"
 fi
