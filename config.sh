@@ -114,8 +114,8 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.unadd '!LANG=en_US git reset HEAD'
 
 # LOG
 # Log One line filtered
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgf '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,trunc)%an%Creset %C(auto)%D%Creset %C(white)%<(30,trunc)%s%Creset" --all --patience'
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,trunc)%an%Creset %C(auto)%D%Creset %C(white)%s%Creset" --patience'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgf '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%<(30,trunc)%s%Creset" --all --patience'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%s%Creset" --patience'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lg '!LANG=en_US git ll --all'
 
 # Log only important commits One line
