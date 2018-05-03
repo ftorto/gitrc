@@ -35,13 +35,6 @@ then
   sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git -y
 fi
 
-# Use tsocks when available (company firewall)
-TSOCKS_CMD=""
-if $(hash tsocks 2>/dev/null)
-then
-  TSOCKS_CMD=tsocks
-fi
-
 export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # git config stuff
@@ -49,7 +42,7 @@ export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Trying to update git-completion.bash
 rm -f scripts/git-completion.bash.bkp > /dev/null 2>&1
-if ${TSOCKS_CMD} wget -O scripts/git-completion.bash.new "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > /dev/null 2>&1
+if wget -O scripts/git-completion.bash.new "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > /dev/null 2>&1
 then
   mv scripts/git-completion.bash scripts/git-completion.bash.bkp
   mv scripts/git-completion.bash.new scripts/git-completion.bash
@@ -60,7 +53,7 @@ else
 fi
 # Trying to update git-flow-completion.bash
 rm -f scripts/git-flow-completion.bash.bkp > /dev/null 2>&1
-if ${TSOCKS_CMD} wget -O scripts/git-flow-completion.bash.new "https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash" > /dev/null 2>&1
+if wget -O scripts/git-flow-completion.bash.new "https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash" > /dev/null 2>&1
 then
   mv scripts/git-flow-completion.bash scripts/git-flow-completion.bash.bkp
   mv scripts/git-flow-completion.bash.new scripts/git-flow-completion.bash
