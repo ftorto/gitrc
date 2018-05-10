@@ -284,7 +284,11 @@ __gitcomp ()
 
 # Clear the variables caching builtins' options when (re-)sourcing
 # the completion script.
-unset $(set |sed -ne 's/^\(__gitcomp_builtin_[a-zA-Z0-9_][a-zA-Z0-9_]*\)=.*/\1/p') 2>/dev/null
+if [[ -n ${ZSH_VERSION-} ]]; then
+	unset $(set |sed -ne 's/^\(__gitcomp_builtin_[a-zA-Z0-9_][a-zA-Z0-9_]*\)=.*/\1/p') 2>/dev/null
+else
+	unset $(compgen -v __gitcomp_builtin_)
+fi
 
 # This function is equivalent to
 #
@@ -390,12 +394,7 @@ __git_index_files ()
 	local root="${2-.}" file
 
 	__git_ls_files_helper "$root" "$1" |
-	while read -r file; do
-		case "$file" in
-		?*/*) echo "${file%%/*}" ;;
-		*) echo "$file" ;;
-		esac
-	done | sort | uniq
+	cut -f1 -d/ | sort | uniq
 }
 
 # Lists branches from the local repository.
@@ -880,6 +879,7 @@ __git_list_porcelain_commands ()
 		check-ref-format) : plumbing;;
 		checkout-index)   : plumbing;;
 		column)           : internal helper;;
+		commit-graph)     : plumbing;;
 		commit-tree)      : plumbing;;
 		count-objects)    : infrequent;;
 		credential)       : credentials;;
@@ -2350,6 +2350,7 @@ _git_config ()
 		core.bigFileThreshold
 		core.checkStat
 		core.commentChar
+		core.commitGraph
 		core.compression
 		core.createObject
 		core.deltaBaseCacheLimit
@@ -2774,12 +2775,20 @@ _git_show_branch ()
 _git_stash ()
 {
 	local save_opts='--all --keep-index --no-keep-index --quiet --patch --include-untracked'
-	local subcommands='push save list show apply clear drop pop create branch'
-	local subcommand="$(__git_find_on_cmdline "$subcommands")"
+	local subcommands='push list show apply clear drop pop create branch'
+	local subcommand="$(__git_find_on_cmdline "$subcommands save")"
+	if [ -n "$(__git_find_on_cmdline "-p")" ]; then
+		subcommand="push"
+	fi
 	if [ -z "$subcommand" ]; then
 		case "$cur" in
 		--*)
 			__gitcomp "$save_opts"
+			;;
+		sa*)
+			if [ -z "$(__git_find_on_cmdline "$save_opts")" ]; then
+				__gitcomp "save"
+			fi
 			;;
 		*)
 			if [ -z "$(__git_find_on_cmdline "$save_opts")" ]; then
