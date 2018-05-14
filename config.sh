@@ -59,6 +59,7 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} color.ui true
 git config ${GIT_GLOBAL_CONFIG_SWITCH} core.editor vi
 
 # SHORTCUTS
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.psuh 'push'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.st '!LANG=en_US git status -sb'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.f '!LANG=en_US git fetch --all --prune --tags --recurse-submodules'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.co '!LANG=en_US git checkout'
