@@ -65,10 +65,39 @@ export PATH=$PATH:${GITRC_PATH}/bin
 # Apply a command to all sub git directories
 gr() {
   rootpath=$(pwd)/
+  [[ $# -eq 0 ]] && multimode=1
+  while [[ $# -gt 0 ]]
+  do
+    key="$1"
 
-  cmd=$*
+    case ${key} in
+      -h|--help)
+        echo "gr -[hmM] [--] command"
+        return 0
+        ;;
+      -m|--match|-f|--filter)
+        match=$2
+        shift
+        ;;
+      -M|--not-match)
+        notmatch=$2
+        shift
+        ;;
+      --)
+        shift
+        cmd="$*"
+        break
+        ;;
+      *)
+        cmd="$*"
+        break
+        ;;
+    esac
+    shift
+  done
+  
 
-  if [ $# -eq 0 ];
+  if [ ! -z "$multimode" ]
   then
     echo "Multiline (Add empty line to end the input)"
     cmd=""
@@ -82,6 +111,17 @@ gr() {
 
   for d in `find -name .git | sed 's@./@@; s@/.git@@'`
   do
+
+    if test ! -z $match
+    then
+      [[ $d != *"$match"* ]] && continue
+    fi
+
+    if test ! -z $notmatch
+    then
+      [[ $d = *"$notmatch"* ]] && continue
+    fi
+
     # Separator
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
 
