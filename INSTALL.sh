@@ -74,6 +74,9 @@ ln -s $(which git) ${GITRC_PATH}/bin/qg
 # Creation fetch_all shortcut
 ln -s $(pwd)/scripts/fetch_all.sh ${GITRC_PATH}/bin/fall
 
+# git recursive
+ln -s $(pwd)/scripts/git-recursive.sh ${GITRC_PATH}/bin/gr
+
 echo "INF Updating personal gitrc to ~/.bashrc"
 
 # Define patterns to identify the .gitrc configuration part
