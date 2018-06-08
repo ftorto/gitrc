@@ -11,7 +11,6 @@ USAGE(){
     exit 0
 }
 
-
 rootpath=$(pwd)/
 
 while test $# -gt 0 
@@ -26,6 +25,9 @@ do
         -m|--match)
             match=$2
             shift
+            ;;
+        -p|--parallel)
+            parallel=true
             ;;
         -M|--not-match)
             notmatch=$2
@@ -57,17 +59,23 @@ if test ! -e "${cmd_file}"
 then
     cmd_file=$(mktemp /tmp/gr.XXXXX)
     chmod +x ${cmd_file}
-    echo "#!/bin/bash" > ${cmd_file}
-    echo "#" >> ${cmd_file}
-    echo "# Please write the script to apply to each GIT repository below" >> ${cmd_file}
-    echo "" >> ${cmd_file}
-    echo "# Use the following variable to refer to the basename of the repository" >> ${cmd_file}
-    echo 'REPO_NAME=$(basename $(pwd))' >> ${cmd_file}
-    echo "" >> ${cmd_file}
-    #echo "# Uncomment to skip this script if REPO_NAME contains <pattern>" >> ${cmd_file}
-    #echo '# [[ $REPO_NAME = *"pattern"* ]] && echo "Not applied!" && exit 0' >> ${cmd_file}
-    echo "" >> ${cmd_file}
-    echo "$cmd" >> ${cmd_file}
+    echo "#!/bin/bash
+# Please write the script to apply to each GIT repository below
+
+# Use the following variable to refer to the basename of the repository
+REPO_NAME=\$(basename \$(pwd))
+
+if [[ \$# -eq 0 ]]
+then
+    # Display a separator line
+    printf '%*s\n' \"\${COLUMNS:-\$(tput cols)}\" '' | tr ' ' _
+    # Display the path to the current repository
+    echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"
+fi
+# Uncomment to skip this script if REPO_NAME contains <pattern>
+# [[ \$REPO_NAME = *\"pattern\"* ]] && echo 'Not applied!' && exit 0
+
+$cmd"> ${cmd_file}
     test -z "$cmd" && vim + -c "startinsert!" ${cmd_file}
 fi
 
@@ -77,15 +85,15 @@ do
     test ! -z $match && [[ $d != *"$match"* ]] && continue
     test ! -z $notmatch && [[ $d = *"$notmatch"* ]] && continue
 
-    # Separator
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
-
-    # Path
-    echo -e "\033[2;37m${rootpath}\033[1;32m$d\033[0m"
-
     # Apply command
     pushd $d > /dev/null;
-    ${cmd_file}
+    if test "$parallel"
+    then 
+        ${cmd_file} parallel &
+    else 
+        ${cmd_file}
+    fi
+    
     popd > /dev/null;
 done
 echo "script applied is located here : ${cmd_file}"
