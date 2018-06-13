@@ -60,6 +60,8 @@ then
     cmd_file=$(mktemp /tmp/gr.XXXXX)
     chmod +x ${cmd_file}
     echo "#!/bin/bash
+# Set the following line to 1 to trigger the parallelism (keep the comment)
+# PARALLEL_MODE = 0
 
 # Use the following variable to refer to the basename of the repository
 REPO_NAME=\$(basename \$(pwd))
@@ -84,6 +86,8 @@ $cmd"> ${cmd_file}
     test -z "$cmd" && vim + -c "startinsert!" ${cmd_file}
 fi
 
+test "$parallel" && sed -i 's/PARALLEL_MODE = 0/PARALLEL_MODE = 1/' ${cmd_file}
+
 for d in `find . -name .git | sed 's@./@@; s@/.git@@'`
 do
     # Filter
@@ -92,7 +96,7 @@ do
 
     # Apply command
     pushd $d > /dev/null;
-    if test "$parallel"
+    if grep "PARALLEL_MODE = 1" ${cmd_file} > /dev/null 2>&1
     then 
         ${cmd_file} parallel &
     else 
