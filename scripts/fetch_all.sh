@@ -35,7 +35,7 @@ do
    LANG=en_US git branch -vv | egrep '^\* |ahead|behind' | sed -e '
     s/].*/]/;
     s/\([0-9a-f]\{7\}\) [^\[]*/\1 /;
-    s/^\(\* [^ ]*\)/\x1b[1;36m\1\x1b[0m/;
+    s/^\(\* [^ ]*\)[ \t]*/\x1b[1;36m\1\x1b[0m /;
     s/\(ahead [0-9]\+\)/\x1b[32m\1\x1b[0m/;
     s/\(gone\)/\x1b[37m\1\x1b[0m/;
     s/\(behind [0-9]\+\)/\x1b[31m\1\x1b[0m/'
