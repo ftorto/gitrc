@@ -44,10 +44,10 @@ __powerline() {
 
         local git_eng="env LANG=C git"   # force git output in English to make our work easier
         #read -r gitDir inGitDir inWorkingTree branch <<< $(git rev-parse --absolute-git-dir --is-inside-git-dir --is-inside-work-tree --abbrev-ref HEAD 2>/dev/null)
-        gitDir=$($git_eng rev-parse --absolute-git-dir HEAD)
-        inGitDir=$($git_eng rev-parse --is-inside-git-dir HEAD)
-        inWorkingTree=$($git_eng rev-parse --is-inside-work-tree  HEAD)
-        branch=$($git_eng rev-parse  --abbrev-ref HEAD)
+        gitDir=$($git_eng rev-parse --absolute-git-dir HEAD 2>/dev/null | head -1)
+        inGitDir=$($git_eng rev-parse --is-inside-git-dir HEAD 2>/dev/null | head -1)
+        inWorkingTree=$($git_eng rev-parse --is-inside-work-tree  HEAD 2>/dev/null | head -1)
+        branch=$($git_eng rev-parse  --abbrev-ref HEAD 2>/dev/null | head -1)
 
         local marks
 
