@@ -75,7 +75,7 @@ ln -s $(which git) ${GITRC_PATH}/bin/qg
 ln -s $(pwd)/scripts/fetch_all.sh ${GITRC_PATH}/bin/fall
 
 # git recursive
-ln -s $(pwd)/scripts/git-recursive.sh ${GITRC_PATH}/bin/gr
+ln -s $(pwd)/scripts/gr.sh ${GITRC_PATH}/bin/gr
 
 echo "INF Updating personal gitrc to ~/.bashrc"
 

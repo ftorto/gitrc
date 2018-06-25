@@ -1,13 +1,14 @@
 #!/bin/bash
 
 USAGE(){
+    echo "Apply a command to any sub directory that is a git workspace (contains `.git` folder)"
     echo "gr [options] [--] [command]"
     echo
-    echo "-m|--match <pattern> : filter on git repository starting with <pattern>"
+    echo "-h|--help                : show this help"
+    echo "-m|--match <pattern>     : filter on git repository starting with <pattern>"
     echo "-M|--not-match <pattern> : filter on git repository not starting with <pattern>"
-    echo "-e|--edit : open vim to enter your commands as a script"
-    echo "-m|--match <pattern> : filter on git repository starting with <pattern>"
-    echo "-m|--match <pattern> : filter on git repository starting with <pattern>"
+    echo "-p|--parallel            : execute the requested commands to all repositories at the same time"
+    echo "--file <file>            : use <file> as script to call within each git worksapce"
     exit 0
 }
 
@@ -57,10 +58,11 @@ done
 # Write content to the script if script not provided
 if test ! -e "${cmd_file}"
 then
-    cmd_file=$(mktemp /tmp/gr.XXXXX)
+    cmd_file=$(mktemp /tmp/git-recurs.XXXXX)
     chmod +x ${cmd_file}
     echo "#!/bin/bash
-# Set the following line to 1 to trigger the parallelism (keep the comment)
+# Set the following line to 1 to trigger the parallelism 
+# Keep the comment ! This is not used as a bash variable
 # PARALLEL_MODE = 0
 
 # Use the following variable to refer to the basename of the repository
@@ -83,9 +85,18 @@ fi
 #########################################################################
 
 $cmd"> ${cmd_file}
-    test -z "$cmd" && vim + -c "startinsert!" ${cmd_file}
+    if hash vim >/dev/null 2>&1
+    then
+        # Use vi if installed
+        test -z "$cmd" && vi + -c "startinsert!" ${cmd_file}
+    else
+        # use default editor otherwise
+        test -z "$cmd" && ${EDITOR} ${cmd_file}
+    fi
 fi
 
+# Trigger parallel mode if `-p` is found as argument
+# If you omit to specify `-p`, you have another chance to do it by setting the flag directly in the script
 test "$parallel" && sed -i 's/PARALLEL_MODE = 0/PARALLEL_MODE = 1/' ${cmd_file}
 
 for d in `find . -name .git | sed 's@./@@; s@/.git@@'`
@@ -96,6 +107,7 @@ do
 
     # Apply command
     pushd $d > /dev/null;
+    
     if grep "PARALLEL_MODE = 1" ${cmd_file} > /dev/null 2>&1
     then 
         ${cmd_file} parallel &
