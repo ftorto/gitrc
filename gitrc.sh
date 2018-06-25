@@ -124,9 +124,3 @@ function tag_subgit {
     LANG=en_US git push -f origin ${tagName}
   done
 }
-
-# Tag the end of a sprint
-# Specific
-function tag_sprint {
-  tag_subgit "sprint$1" "Fin sprint sprint$1" "master"
-}

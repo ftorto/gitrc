@@ -33,11 +33,11 @@ then
   sed -i 's/default-cache-ttl.*/default-cache-ttl 600/' ~/.gnupg/gpg-agent.conf 2>/dev/null || echo "default-cache-ttl 600" >> ~/.gnupg/gpg-agent.conf
 
   SIGN_SWITCH="-s"
-  if hash gpg2
+  if hash gpg2 > /dev/null 2>&1
   then
     git config ${GIT_GLOBAL_CONFIG_SWITCH} gpg.program gpg2
   else
-    hash gpg2 > /dev/null 2>&1 || echo "WAR Please install gpg2 !"
+    echo "WAR Please install gpg2 !"
   fi
 else
   git config ${GIT_GLOBAL_CONFIG_SWITCH} --unset user.signingkey
@@ -63,10 +63,10 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.psuh 'push'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.st '!LANG=en_US git status -sb'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.f '!LANG=en_US git fetch --all --prune --tags --recurse-submodules'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.co '!LANG=en_US git checkout'
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cob '!LANG=en_US git checkout -b '
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.commit "!LANG=en_US git commit ${SIGN_SWITCH}"
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ci "!LANG=en_US git commit ${SIGN_SWITCH}"
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cim "!LANG=en_US git commit ${SIGN_SWITCH} -m"
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cob '!LANG=en_US git checkout -b'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.commit '!LANG=en_US git commit ${SIGN_SWITCH}'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ci '!LANG=en_US git commit ${SIGN_SWITCH}'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cim '!LANG=en_US git commit ${SIGN_SWITCH} -m'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cp '!LANG=en_US git cherry-pick'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.br '!LANG=en_US git branch -vv'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.amend '!LANG=en_US git commit --amend'
