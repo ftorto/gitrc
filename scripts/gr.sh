@@ -117,4 +117,5 @@ do
     
     popd > /dev/null;
 done
+wait
 echo "script applied is located here : ${cmd_file}"
