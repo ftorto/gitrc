@@ -3,11 +3,11 @@
 rootpath=$(pwd)/
 
 function USAGE(){
-  echo "-v|--verbose             : Verbose mode"
+  echo "-u|--update              : Update before display"
   echo "-h|--help                : This page"
 }
 
-verbose=0
+UPDATE=false
 while [[ $# -gt 0 ]]
 do
    key="$1"
@@ -15,6 +15,10 @@ do
    case ${key} in
       -h|--help)
          USAGE
+         exit 0;
+         ;;
+      -u|--update)
+         UPDATE=true
          exit 0;
          ;;
       *)
@@ -30,8 +34,7 @@ do
    pushd ${rootpath}$d > /dev/null;
    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
    echo -e "\033[0;32m${rootpath}\033[1;34m$d\033[0m"
-   LANG=en_US git fetch --all --prune --tags --quiet --jobs=4
-   #LANG=en_US git branch -vv | egrep --color=always '^\* |ahead|behind'
+   test UPDATE == true && LANG=en_US git fetch --all --prune --tags --quiet --jobs=4
    LANG=en_US git branch -vv | egrep '^\* |ahead|behind' | sed -e '
     s/].*/]/;
     s/\([0-9a-f]\{7\}\) [^\[]*/\1 /;
