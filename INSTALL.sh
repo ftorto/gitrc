@@ -39,6 +39,7 @@ export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # git config stuff
 ./config.sh
+./config.aliases.sh
 
 # Trying to update git-completion.bash
 rm -f scripts/git-completion.bash.bkp > /dev/null 2>&1
