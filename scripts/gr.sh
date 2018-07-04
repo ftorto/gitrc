@@ -61,27 +61,16 @@ then
     cmd_file=$(mktemp /tmp/git-recurs.XXXXX)
     chmod +x ${cmd_file}
     echo "#!/bin/bash
-# Set the following line to 1 to trigger the parallelism 
-# Keep the comment ! This is not used as a bash variable
-# PARALLEL_MODE = 0
-
-# Use the following variable to refer to the basename of the repository
-REPO_NAME=\$(basename \$(pwd))
-# Current git branch
-BRANCH=\$(LANG=en_US git rev-parse --abbrev-ref HEAD)
+# PARALLEL_MODE:0 <-- set to 1 to activate the parallelism 
+REPO_NAME=\$(basename \$(pwd)) # basename of the repository
+BRANCH=\$(LANG=en_US git rev-parse --abbrev-ref HEAD) # Current git branch
 
 hr() {
-  local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'
-  local cols=\${COLUMNS:-\$(tput cols)}
-  while ((\${#line} < cols)); do line+="\$line"; done
-  printf '%s%s%s\n' "\$start" "\${line:0:cols}" "\$end"
+  local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'; local cols=\${COLUMNS:-\$(tput cols)}; while ((\${#line} < cols)); do line+="\$line"; done; printf '%s%s%s\n' "\$start" "\${line:0:cols}" "\$end"
 }
 
-if [[ \$# -eq 0 ]]
-then
-    hr
-    echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"
-fi
+[[ \$# -eq 0 ]] && hr && echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"
+
 # Uncomment to skip this script if REPO_NAME contains <pattern>
 # [[ \$REPO_NAME = *\"pattern\"* ]] && echo 'skip repo!' && exit 0
 # Uncomment to skip this script if BRANCH doesn't contain pattern <pattern>
@@ -104,7 +93,7 @@ fi
 
 # Trigger parallel mode if `-p` is found as argument
 # If you omit to specify `-p`, you have another chance to do it by setting the flag directly in the script
-test "$parallel" && sed -i 's/PARALLEL_MODE = 0/PARALLEL_MODE = 1/' ${cmd_file}
+test "$parallel" && sed -i 's/PARALLEL_MODE:0/PARALLEL_MODE:1/' ${cmd_file}
 
 for d in `find . -name .git | sed 's@./@@; s@/.git@@'`
 do
