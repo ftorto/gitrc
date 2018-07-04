@@ -70,9 +70,16 @@ REPO_NAME=\$(basename \$(pwd))
 # Current git branch
 BRANCH=\$(LANG=en_US git rev-parse --abbrev-ref HEAD)
 
+hr() {
+  local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'
+  local cols=\${COLUMNS:-\$(tput cols)}
+  while ((\${#line} < cols)); do line+="\$line"; done
+  printf '%s%s%s\n' "\$start" "\${line:0:cols}" "\$end"
+}
+
 if [[ \$# -eq 0 ]]
 then
-    printf '%*s\n' \"\${COLUMNS:-\$(tput cols)}\" '' | tr ' ' _
+    hr
     echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"
 fi
 # Uncomment to skip this script if REPO_NAME contains <pattern>
