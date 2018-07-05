@@ -3,24 +3,24 @@
 
 if test -e config.env
 then
-  source config.env
+    source config.env
 else
-  echo "Fill in config.env file first"
-  exit 1
+    echo "Fill in config.env file first"
+    exit 1
 fi
 
 exit_flag=0
 for varname in "GIT_USER_EMAIL" "GIT_USER_NAME" "GIT_CRED_NAME"
 do
-  if test -z "${!varname}"
-  then
-    echo "Please set up ${varname} in config.env file"
-    exit_flag=1
-  fi
+    if test -z "${!varname}"
+    then
+        echo "Please set up ${varname} in config.env file"
+        exit_flag=1
+    fi
 done
 if test ${exit_flag} -eq 1
 then
-  exit 1
+    exit 1
 fi
 
 # All configuration will be global
@@ -28,11 +28,15 @@ export GIT_GLOBAL_CONFIG=1
 
 # Checking minimum git version available
 git --version
-read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
+ls /etc/apt/sources.list.d/git* > /dev/null
+if [[ $? -ne 0 ]]
 then
-  sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git -y
+    read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git -y
+    fi
 fi
 
 export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -45,23 +49,23 @@ export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 rm -f scripts/git-completion.bash.bkp > /dev/null 2>&1
 if wget -O scripts/git-completion.bash.new "https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash" > /dev/null 2>&1
 then
-  mv scripts/git-completion.bash scripts/git-completion.bash.bkp
-  mv scripts/git-completion.bash.new scripts/git-completion.bash
-  chmod +x scripts/git-completion.bash
+    mv scripts/git-completion.bash scripts/git-completion.bash.bkp
+    mv scripts/git-completion.bash.new scripts/git-completion.bash
+    chmod +x scripts/git-completion.bash
 else
-  echo "WAR Impossible to get fresh git-completion.bash. Using old one"
-  rm -f scripts/git-completion.bash.new
+    echo "WAR Impossible to get fresh git-completion.bash. Using old one"
+    rm -f scripts/git-completion.bash.new
 fi
 # Trying to update git-flow-completion.bash
 rm -f scripts/git-flow-completion.bash.bkp > /dev/null 2>&1
 if wget -O scripts/git-flow-completion.bash.new "https://raw.githubusercontent.com/bobthecow/git-flow-completion/master/git-flow-completion.bash" > /dev/null 2>&1
 then
-  mv scripts/git-flow-completion.bash scripts/git-flow-completion.bash.bkp
-  mv scripts/git-flow-completion.bash.new scripts/git-flow-completion.bash
-  chmod +x scripts/git-flow-completion.bash
+    mv scripts/git-flow-completion.bash scripts/git-flow-completion.bash.bkp
+    mv scripts/git-flow-completion.bash.new scripts/git-flow-completion.bash
+    chmod +x scripts/git-flow-completion.bash
 else
-  echo "WAR Impossible to get fresh git-flow-completion.bash. Using old one"
-  rm -f scripts/git-flow-completion.bash.new
+    echo "WAR Impossible to get fresh git-flow-completion.bash. Using old one"
+    rm -f scripts/git-flow-completion.bash.new
 fi
 
 
