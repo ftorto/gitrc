@@ -15,7 +15,7 @@ then
   # because credential is cumulative, reset all occurrences before adding new cache
   git config ${GIT_GLOBAL_CONFIG_SWITCH} --unset-all credential.helper 
   # cache passwords for 1 days
-  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper 'cache --timeout=86400'
+  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper 'cache --timeout 86400'
 else
   echo "INF Please set up your configuration in config.env file"
 fi
