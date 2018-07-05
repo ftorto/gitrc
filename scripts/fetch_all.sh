@@ -62,13 +62,13 @@ _title(){
     
 }
 
-for d in `find . -maxdepth 5 -name .git | sed 's@./@@; s@/.git@@'`
+for d in `find . -maxdepth 5 -name .git 2>/dev/null | sed 's@./@@; s@/.git@@'`
 do
     pushd ${rootpath}$d > /dev/null;
     
     # Get information
-    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes")
-    r_modified=$(LANG=en_US git status -sb|wc -l)
+    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes")
+    r_modified=$(LANG=en_US git status -sb 2>/dev/null|wc -l)
     
     # Title
     if test ! -z "$r_branches" -o "$r_modified" -gt 1 -o ! -z "$SHOW_ALL"

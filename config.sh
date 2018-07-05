@@ -12,15 +12,17 @@ then
   # AUTH
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.name "${GIT_USER_NAME}"
   git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.username "${GIT_CRED_NAME:-$GIT_USER_NAME}"
-  # cache passwords for 31 days
-  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper 'cache --timeout=2678400'
+  # because credential is cumulative, reset all occurrences before adding new cache
+  git config ${GIT_GLOBAL_CONFIG_SWITCH} --unset-all credential.helper 
+  # cache passwords for 1 days
+  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.helper 'cache --timeout=86400'
 else
   echo "INF Please set up your configuration in config.env file"
 fi
 
 # Proxy configuration
-#git config http.proxy $PROXY_INFO
-#git config https.proxy $PROXY_INFO
+#git config ${GIT_GLOBAL_CONFIG_SWITCH} http.proxy $PROXY_INFO
+#git config ${GIT_GLOBAL_CONFIG_SWITCH} https.proxy $PROXY_INFO
 
 # SIGN
 SIGN_SWITCH=""
@@ -29,8 +31,8 @@ then
   echo "INF Installing signing key"
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.signingkey ${GIT_SIGNING_KEY}
   git config ${GIT_GLOBAL_CONFIG_SWITCH} commit.gpgsign true
-  # Cache the passphrase for 1d
-  sed -i 's/default-cache-ttl.*/default-cache-ttl 86400/' ~/.gnupg/gpg-agent.conf 2>/dev/null || echo "default-cache-ttl 86400" >> ~/.gnupg/gpg-agent.conf
+  # Cache the passphrase for 10min
+  sed -i 's/default-cache-ttl.*/default-cache-ttl 600/' ~/.gnupg/gpg-agent.conf 2>/dev/null || echo "default-cache-ttl 600" >> ~/.gnupg/gpg-agent.conf
 
   SIGN_SWITCH="-s"
   if hash gpg2 > /dev/null 2>&1
