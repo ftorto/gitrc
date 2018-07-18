@@ -31,7 +31,7 @@ do
     case ${key} in
         -h|--help)
             USAGE
-            exit 0;
+            exit 0
         ;;
         -u|--update)
             UPDATE=true
@@ -44,6 +44,8 @@ do
         ;;
         -a|--all)
             SHOW_ALL=1
+            INCLUDE_REMOTE="a"
+            SHOW_CURRENT_BRANCH='^\* '
         ;;
         *)
             HLPATTERN=$1
@@ -56,7 +58,6 @@ done
 _title(){
     rootpath=$1
     d=$2
-    #printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' _
     hr
     echo -e "\033[0;32m${rootpath}\033[1;34m$d\033[0m"
     
@@ -68,15 +69,15 @@ do
     
     # Get information
     r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes")
-    r_modified=$(LANG=en_US git status -sb 2>/dev/null|wc -l)
+    r_modified=$(git status --porcelain 2>/dev/null|wc -l)
     
     # Title
-    if test ! -z "$r_branches" -o "$r_modified" -gt 1 -o ! -z "$SHOW_ALL"
+    if test ! -z "$r_branches" -o "$r_modified" -gt 0 -o ! -z "$SHOW_ALL"
     then
         _title $rootpath $d
         
         # Update
-        test $UPDATE == true && LANG=en_US git fetch --all --prune --tags --quiet --jobs=4
+        test $UPDATE == true && git fetch --all --prune --tags --quiet --jobs=4
         
         # Show branches status
         if test ! -z "$r_branches"
@@ -91,7 +92,7 @@ do
             s/\(behind [0-9]\+\)/\x1b[31m\1\x1b[0m/' | sed "s/\(${HLPATTERN}\)/\x1b[41;32;1m\1\x1b[0m/;"
         fi
         # Show git status
-        [ $(LANG=en_US git status -sb|wc -l) -gt 1 ] && LANG=en_US git status -sb
+        [ $(git status --porcelain | wc -l) -gt 0 ] && LANG=en_US git status -sb
         
     fi
     popd > /dev/null;
