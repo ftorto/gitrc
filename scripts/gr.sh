@@ -104,7 +104,7 @@ do
     # Apply command
     pushd $d > /dev/null;
     
-    if grep "PARALLEL_MODE = 1" ${cmd_file} > /dev/null 2>&1
+    if grep "PARALLEL_MODE:1" ${cmd_file} > /dev/null 2>&1
     then 
         ${cmd_file} parallel &
     else 
