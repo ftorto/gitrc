@@ -1,5 +1,7 @@
 #!/bin/bash
 
+test -e config.env && source config.env
+
 # GIT_GLOBAL_CONFIG allow to specify if config shall be applied globally or locally
 [[ ${GIT_GLOBAL_CONFIG} ]] && GIT_GLOBAL_CONFIG_SWITCH=" --global "
 
@@ -28,7 +30,7 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mysha1 '!LANG=en_US git rev-parse -
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mybranch '!LANG=en_US git rev-parse --abbrev-ref HEAD'
 
 # DIFF / MERGE
-if test ${GIT_GRAPHICAL}
+if test ${GIT_GRAPHICAL} -eq 1
 then
   # Use MELD as diff
   git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.dd 'difftool'
