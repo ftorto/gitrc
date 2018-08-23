@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # GIT_GLOBAL_CONFIG allow to specify if config shall be applied globally or locally
-[[ ${GIT_GLOBAL_CONFIG} ]] && GIT_GLOBAL_CONFIG_SWITCH=" --global "
+[[ ${GIT_GLOBAL_CONFIG} ]] && GIT_GLOBAL_CONFIG_SWITCH="--global"
 
 echo "INF Installing GIT Configuration"
 if [[ -e config.env ]]
