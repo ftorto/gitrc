@@ -68,7 +68,7 @@ do
     pushd ${rootpath}$d > /dev/null;
     
     # Get information
-    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes")
+    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes|${HLPATTERN:-ahead}")
     r_modified=$(git status --porcelain 2>/dev/null|wc -l)
     
     # Title
