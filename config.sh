@@ -78,7 +78,3 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.algorithm histogram
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.compactionHeuristic true
 # Check for renames/moves
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.renames true
-
-# Merges --no-ff
-git config ${GIT_GLOBAL_CONFIG_SWITCH} branch.master.mergeoptions  "--no-ff"
-git config ${GIT_GLOBAL_CONFIG_SWITCH} branch.develop.mergeoptions  "--no-ff"
