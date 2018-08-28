@@ -36,8 +36,10 @@ then
   git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.dd 'difftool'
   git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.d 'difftool --dir-diff'
   git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.dc 'difftool --dir-diff --cached'
+  
 fi
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.diffc 'diff --cached'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ma 'merge --abort'
 
 # List the impacted files
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.impacted 'diff --name-only'
