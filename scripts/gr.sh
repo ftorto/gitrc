@@ -2,18 +2,21 @@
 
 USAGE(){
     echo "Apply a command to any sub directory that is a git workspace (contains `.git` folder)"
-    echo "gr [options] [--] [command]"
+    echo "gr [options] [--] [<command>]"
     echo
     echo "-h|--help                : show this help"
     echo "-m|--match <pattern>     : filter on git repository starting with <pattern>"
     echo "-M|--not-match <pattern> : filter on git repository not starting with <pattern>"
     echo "-p|--parallel            : execute the requested commands to all repositories at the same time"
-    echo "--file <file>            : use <file> as script to call within each git worksapce"
+    echo "--file|--input|-i <file> : use <file> as script to call within each git workspace"
+    echo "--edit|-e                : force the editor to be opened"
+    echo "--no-header|--nh|-N      : Don't show headers"
     exit 0
 }
 
 rootpath=$(pwd)/
-
+FILE_EDIT=false
+NO_HEADER=false
 while test $# -gt 0 
 do
     key="$1"
@@ -39,12 +42,17 @@ do
             cmd="$*"
             break
             ;;
-        --file)
+        --file|--input|-i)
             cmd_file=$2
+            shift
             # exists and is not empty
             test -e ${cmd_file} -a -s ${cmd_file} || exit 2
-            shift
-            break
+            ;;
+        --edit|-e)
+            FILE_EDIT=true
+            ;;
+        --no-header|--nh|-N)
+            NO_HEADER=true
             ;;
         *)
             cmd="$*"
@@ -68,10 +76,14 @@ BRANCH=\$(LANG=en_US git rev-parse --abbrev-ref HEAD) # Current git branch
 hr() {
   local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'; local cols=\${COLUMNS:-\$(tput cols)}; while ((\${#line} < cols)); do line+="\$line"; done; printf '%s%s%s\n' "\$start" "\${line:0:cols}" "\$end"
 }
+"> ${cmd_file}
 
-[[ \$# -eq 0 ]] && hr && echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"
+if [ "${NO_HEADER}" = false ]
+then
+  echo "[[ \$# -eq 0 ]] && hr && echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"" >> ${cmd_file}
+fi
 
-# Uncomment to skip this script if REPO_NAME contains <pattern>
+echo "# Uncomment to skip this script if REPO_NAME contains <pattern>
 # [[ \$REPO_NAME = *\"pattern\"* ]] && echo 'skip repo!' && exit 0
 # Uncomment to skip this script if BRANCH doesn't contain pattern <pattern>
 # [[ \$BRANCH != *\"pattern\"* ]] && echo 'skip branch!' && exit 0
@@ -80,17 +92,21 @@ hr() {
 # Please write the script to apply to each GIT repository below
 #########################################################################
 
-$cmd"> ${cmd_file}
+$cmd">> ${cmd_file}
+FILE_EDIT=true
+fi
+
+if [ "$FILE_EDIT" = true ]
+then
     if hash vim >/dev/null 2>&1
     then
         # Use vi if installed
-        test -z "$cmd" && vi + -c "startinsert!" ${cmd_file}
+        test -z "$cmd" && vi ${cmd_file}
     else
         # use default editor otherwise
         test -z "$cmd" && ${EDITOR} ${cmd_file}
     fi
 fi
-
 # Trigger parallel mode if `-p` is found as argument
 # If you omit to specify `-p`, you have another chance to do it by setting the flag directly in the script
 test "$parallel" && sed -i 's/PARALLEL_MODE:0/PARALLEL_MODE:1/' ${cmd_file}
