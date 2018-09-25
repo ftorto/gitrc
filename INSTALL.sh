@@ -10,7 +10,7 @@ else
 fi
 
 exit_flag=0
-for varname in "GIT_USER_EMAIL" "GIT_USER_NAME" "GIT_CRED_NAME"
+for varname in "GIT_USER_EMAIL" "GIT_USER_NAME" "GIT_CRED_DEFAULT_NAME"
 do
     if test -z "${!varname}"
     then
