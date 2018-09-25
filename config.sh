@@ -79,3 +79,9 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.algorithm histogram
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.compactionHeuristic true
 # Check for renames/moves
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.renames true
+
+# Git flow
+git config ${GIT_GLOBAL_CONFIG_SWITCH} gitflow.feature.finish.no-ff true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} gitflow.bugfix.finish.no-ff true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} gitflow.hotfix.finish.no-ff true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} gitflow.support.finish.no-ff true
