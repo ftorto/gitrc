@@ -9,6 +9,8 @@ then
   source config.env
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.email "${GIT_USER_EMAIL}"
 
+  [[ -e private-config.env ]] && source private-config.env
+
   # AUTH
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.name "${GIT_USER_NAME}"
   git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.https://github.com.username ${GIT_CRED_GITHUB_NAME:-GIT_CRED_DEFAULT_NAME}

@@ -1,3 +1,4 @@
 bin
 git-completion.bash.bkp
 git-flow-completion.bash.bkp
+private-config.env
