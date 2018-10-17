@@ -64,7 +64,8 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgg '!LANG=en_US git ll --all --gre
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.l '!LANG=en_US git lg --simplify-by-decoration'
 
 # Log verbose
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --color=auto --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset " --all'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --color=auto --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset "'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgl '!LANG=en_US git lll --all'
 # Log verbose with grep on comment
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lllg '!LANG=en_US git log --color=auto --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset " --all --grep'
 

@@ -1,14 +1,9 @@
 #!/bin/bash
 # Called only the first time
 
-if test -e config.env
-then
-    source config.env
-else
-    echo "Fill in config.env file first"
-    exit 1
-fi
+test -e config.env && source config.env || echo "Fill in config.env file first" || exit 1
 
+# Minimum variables to be set
 exit_flag=0
 for varname in "GIT_USER_EMAIL" "GIT_USER_NAME" "GIT_CRED_DEFAULT_NAME"
 do
@@ -18,10 +13,7 @@ do
         exit_flag=1
     fi
 done
-if test ${exit_flag} -eq 1
-then
-    exit 1
-fi
+test ${exit_flag} -eq 1 && exit 1
 
 # All configuration will be global
 export GIT_GLOBAL_CONFIG=1
