@@ -49,6 +49,7 @@ else
   git config ${GIT_GLOBAL_CONFIG_SWITCH} commit.gpgsign false
   echo "WAR No signingKey found !"
 fi
+export SIGN_SWITCH
 
 # PUSH METHOD
 git config ${GIT_GLOBAL_CONFIG_SWITCH} push.default current

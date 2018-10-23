@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Autocomplete
-source ${GITRC_PATH}/scripts/git-completion.bash
-source ${GITRC_PATH}/scripts/git-flow-completion.bash
+source "${GITRC_PATH}/scripts/git-completion.bash"
+source "${GITRC_PATH}/scripts/git-flow-completion.bash"
 __git_complete g _git
 __git_complete gti _git
 __git_complete qg _git
 __git_complete gf _git_flow
 
 # Prompt
-source ${GITRC_PATH}/git_ps1.sh
+source "${GITRC_PATH}/git_ps1.sh"
 
 # git in English
 alias git='LANGUAGE=en_US.UTF-8 git'
@@ -68,8 +68,6 @@ export PATH=$PATH:${GITRC_PATH}/bin
 cobr() {
   default_branches="develop master"
 
-  rootpath=$(pwd)/
-
   branches_order=$*
   if [ $# -eq 0 ]; then
     echo "Need to provide at least 1 branch"
@@ -77,17 +75,16 @@ cobr() {
     # Adding default branches at the end
     branches_order="${branches_order} ${default_branches}"
 
-    for d in `find -name .git | sed 's@./@@; s@/.git@@'`
+    for d in $(find . -name .git | sed 's@./@@; s@/.git@@')
     do
       # Apply command
-      pushd $d > /dev/null;
+      pushd "$d" > /dev/null;
 
       for b in ${branches_order}
       do
-        git checkout $b > /dev/null 2>&1
-        if [ $? = 0 ]
+        if git checkout "$b" > /dev/null 2>&1
         then
-          printf "%20s set to %s\n" $d $b
+          printf "%20s set to %s\n" "$d" "$b"
           break;
         fi
       done
@@ -102,7 +99,7 @@ function git_dig {
   if [ $# -eq 0 ]; then
     echo "Find all commits (even in orphans) containing $1 in diff log"
   else
-    git rev-list --all | xargs git grep --threads 4 --color $1
+    git rev-list --all | xargs git grep --threads 4 --color "$1"
     #git log --pretty=format:'%Cred%h%Creset - %Cgreen(%ad)%Creset - %s %C(bold blue)<%an>%Creset' --abbrev-commit --date=short -G"$1" -- $2
   fi
 }
@@ -116,14 +113,14 @@ function tag_subgit {
   tagComment=${2}
   branchToTag=${3:-master}
 
-  for d in `find -maxdepth 2 -name .git | sed 's@./@@; s@/.git@@'`
+  for d in $(find . -maxdepth 2 -name .git | sed 's@./@@; s@/.git@@')
   do
-    pushd $d > /dev/null;
+    pushd "$d" > /dev/null;
 
     # -s to sign commit
-    LANG=en_US git tag -f -as ${tagName} -m "${tagComment}" ${branchToTag}
+    LANG=en_US git tag -f -as "${tagName}" -m "${tagComment}" "${branchToTag}"
 
     # then push tag
-    LANG=en_US git push -f origin ${tagName}
+    LANG=en_US git push -f origin "${tagName}"
   done
 }

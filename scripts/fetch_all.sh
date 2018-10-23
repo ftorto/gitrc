@@ -63,18 +63,18 @@ _title(){
     
 }
 
-for d in `find . -maxdepth 5 -name .git 2>/dev/null | sed 's@./@@; s@/.git@@'`
+for d in $(find . -maxdepth 5 -name .git 2>/dev/null | sed 's@./@@; s@/.git@@')
 do
-    pushd ${rootpath}$d > /dev/null;
+    pushd "${rootpath}$d" > /dev/null;
     
     # Get information
-    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | egrep -v 'remotes.*(HEAD|develop|master)' | egrep "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes|${HLPATTERN:-ahead}")
+    r_branches=$(LANG=en_US git branch -${INCLUDE_REMOTE:-""}vv 2>/dev/null | grep -E -v 'remotes.*(HEAD|develop|master)' | grep -E "${SHOW_CURRENT_BRANCH}|ahead|behind|remotes|${HLPATTERN:-ahead}")
     r_modified=$(git status --porcelain 2>/dev/null|wc -l)
     
     # Title
     if test ! -z "$r_branches" -o "$r_modified" -gt 0 -o ! -z "$SHOW_ALL"
     then
-        _title $rootpath $d
+        _title "$rootpath" "$d"
         
         # Update
         test $UPDATE == true && git fetch --all --prune --tags --quiet --jobs=4
@@ -92,7 +92,7 @@ do
             s/\(behind [0-9]\+\)/\x1b[31m\1\x1b[0m/' | sed "s/\(${HLPATTERN}\)/\x1b[41;32;1m\1\x1b[0m/;"
         fi
         # Show git status
-        [ $(git status --porcelain | wc -l) -gt 0 ] && LANG=en_US git status -sb
+        [ "$(git status --porcelain | wc -l)" -gt 0 ] && LANG=en_US git status -sb
         
     fi
     popd > /dev/null;

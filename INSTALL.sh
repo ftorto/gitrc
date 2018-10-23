@@ -20,8 +20,7 @@ export GIT_GLOBAL_CONFIG=1
 
 # Checking minimum git version available
 git --version
-ls /etc/apt/sources.list.d/git* > /dev/null
-if [[ $? -ne 0 ]]
+if ls /etc/apt/sources.list.d/git* > /dev/null
 then
     read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
     echo
@@ -31,7 +30,8 @@ then
     fi
 fi
 
-export GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export GITRC_PATH
 
 # git config stuff
 ./config.sh
@@ -62,19 +62,19 @@ fi
 
 
 # Creating 'g' and 'qg' shortcuts
-rm -rf ${GITRC_PATH}/bin
-mkdir ${GITRC_PATH}/bin
-ln -s $(which git) ${GITRC_PATH}/bin/g
+rm -rf "${GITRC_PATH:?}/bin"
+mkdir "${GITRC_PATH:?}/bin"
+ln -s "$(which git)" "${GITRC_PATH:?}/bin/g"
 # This one happen when trying to quit an interactive git log but log fit the screen
-ln -s $(which git) ${GITRC_PATH}/bin/qg
+ln -s "$(which git)" "${GITRC_PATH:?}/bin/qg"
 
 # Creation fetch_all shortcut
-ln -s $(pwd)/scripts/fetch_all.sh ${GITRC_PATH}/bin/fall
+ln -s "$(pwd)/scripts/fetch_all.sh" "${GITRC_PATH:?}/bin/fall"
 
-ln -s $(pwd)/scripts/stamp.sh ${GITRC_PATH}/bin/git-stamp
+ln -s "$(pwd)/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
 
 # git recursive
-ln -s $(pwd)/scripts/gr.sh ${GITRC_PATH}/bin/gr
+ln -s "$(pwd)/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
 
 echo "INF Updating personal gitrc to ~/.bashrc"
 
@@ -85,12 +85,13 @@ endPattern="### END .GITRC CONFIGURATION ###"
 # Remove previous run
 sed -i "/${startPattern}/,/${endPattern}/d" ~/.bashrc
 
-echo ${startPattern} >> ~/.bashrc
-echo "# DO NOT MODIFY THIS PART MANUALLY" >> ~/.bashrc
-echo "# Sourcing personal git configuration" >> ~/.bashrc
-echo "export GITRC_PATH=${GITRC_PATH}" >> ~/.bashrc
-echo 'export GPG_TTY=$(tty)' >> ~/.bashrc
-echo "source ${GITRC_PATH}/gitrc.sh" >> ~/.bashrc
-echo ${endPattern} >> ~/.bashrc
-
+{
+    echo "${startPattern}"
+    echo "# DO NOT MODIFY THIS PART MANUALLY"
+    echo "# Sourcing personal git configuration"
+    echo "export GITRC_PATH=${GITRC_PATH}"
+    echo "export GPG_TTY=\$(tty)"
+    echo "source \"${GITRC_PATH}/gitrc.sh\""
+    echo "${endPattern}"
+} >> ~/.bashrc
 echo "INF Git install completed"

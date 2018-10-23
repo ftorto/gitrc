@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USAGE(){
-    echo "Apply a command to any sub directory that is a git workspace (contains `.git` folder)"
+    echo "Apply a command to any sub directory that is a git workspace (contains '.git' folder)"
     echo "gr [options] [--] [<command>]"
     echo
     echo "-h|--help                : show this help"
@@ -14,7 +14,6 @@ USAGE(){
     exit 0
 }
 
-rootpath=$(pwd)/
 FILE_EDIT=false
 NO_HEADER=false
 while test $# -gt 0 
@@ -46,7 +45,7 @@ do
             cmd_file=$2
             shift
             # exists and is not empty
-            test -e ${cmd_file} -a -s ${cmd_file} || exit 2
+            test -e "${cmd_file}" -a -s "${cmd_file}" || exit 2
             ;;
         --edit|-e)
             FILE_EDIT=true
@@ -67,7 +66,7 @@ done
 if test ! -e "${cmd_file}"
 then
     cmd_file=$(mktemp /tmp/git-recurs.XXXXX)
-    chmod +x ${cmd_file}
+    chmod +x "${cmd_file}"
     echo "#!/bin/bash
 # PARALLEL_MODE:0 <-- set to 1 to activate the parallelism 
 REPO_NAME=\$(basename \$(pwd)) # basename of the repository
@@ -76,11 +75,11 @@ BRANCH=\$(LANG=en_US git rev-parse --abbrev-ref HEAD) # Current git branch
 hr() {
   local start=$'\e(0' end=$'\e(B' line='qqqqqqqqqqqqqqqq'; local cols=\${COLUMNS:-\$(tput cols)}; while ((\${#line} < cols)); do line+="\$line"; done; printf '%s%s%s\n' "\$start" "\${line:0:cols}" "\$end"
 }
-"> ${cmd_file}
+"> "${cmd_file}"
 
 if [ "${NO_HEADER}" = false ]
 then
-  echo "[[ \$# -eq 0 ]] && hr && echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"" >> ${cmd_file}
+  echo "[[ \$# -eq 0 ]] && hr && echo -e \"\033[2;37m\$(dirname \$(pwd))/\033[1;32m\$REPO_NAME\033[0m\"" >> "${cmd_file}"
 fi
 
 echo "# Uncomment to skip this script if REPO_NAME contains <pattern>
@@ -92,7 +91,7 @@ echo "# Uncomment to skip this script if REPO_NAME contains <pattern>
 # Please write the script to apply to each GIT repository below
 #########################################################################
 
-$cmd">> ${cmd_file}
+$cmd">> "${cmd_file}"
 FILE_EDIT=true
 fi
 
@@ -101,30 +100,30 @@ then
     if hash vim >/dev/null 2>&1
     then
         # Use vi if installed
-        test -z "$cmd" && vi ${cmd_file}
+        test -z "$cmd" && vi "${cmd_file}"
     else
         # use default editor otherwise
-        test -z "$cmd" && ${EDITOR} ${cmd_file}
+        test -z "$cmd" && ${EDITOR} "${cmd_file}"
     fi
 fi
 # Trigger parallel mode if `-p` is found as argument
 # If you omit to specify `-p`, you have another chance to do it by setting the flag directly in the script
 test "$parallel" && sed -i 's/PARALLEL_MODE:0/PARALLEL_MODE:1/' ${cmd_file}
 
-for d in `find . -name .git | sed 's@./@@; s@/.git@@'`
+for d in $(find . -name .git | sed 's@./@@; s@/.git@@')
 do
     # Filter
-    test ! -z $match && [[ $d != *"$match"* ]] && continue
-    test ! -z $notmatch && [[ $d = *"$notmatch"* ]] && continue
+    test ! -z "$match" && [[ $d != *"$match"* ]] && continue
+    test ! -z "$notmatch" && [[ $d = *"$notmatch"* ]] && continue
 
     # Apply command
-    pushd $d > /dev/null;
+    pushd "$d" > /dev/null;
     
-    if grep "PARALLEL_MODE:1" ${cmd_file} > /dev/null 2>&1
+    if grep "PARALLEL_MODE:1" "${cmd_file}" > /dev/null 2>&1
     then 
-        ${cmd_file} parallel &
+        "${cmd_file}" parallel &
     else 
-        ${cmd_file}
+        "${cmd_file}"
     fi
     
     popd > /dev/null;
