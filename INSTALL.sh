@@ -72,6 +72,7 @@ ln -s "$(which git)" "${GITRC_PATH:?}/bin/qg"
 ln -s "$(pwd)/scripts/fetch_all.sh" "${GITRC_PATH:?}/bin/fall"
 
 ln -s "$(pwd)/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
+ln -s "$(pwd)/scripts/git-checkbr.sh" "${GITRC_PATH:?}/bin/git-checkbr"
 
 # git recursive
 ln -s "$(pwd)/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
