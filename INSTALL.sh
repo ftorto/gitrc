@@ -20,7 +20,7 @@ export GIT_GLOBAL_CONFIG=1
 
 # Checking minimum git version available
 git --version
-if ls /etc/apt/sources.list.d/git* > /dev/null
+if test -z "$(ls /etc/apt/sources.list.d/git*)" > /dev/null
 then
     read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
     echo
@@ -60,22 +60,18 @@ else
     rm -f scripts/git-flow-completion.bash.new
 fi
 
-
-# Creating 'g' and 'qg' shortcuts
+## BIN setup
+# Cleaning
 rm -rf "${GITRC_PATH:?}/bin"
 mkdir "${GITRC_PATH:?}/bin"
+# Creating 'g' and 'qg' shortcuts
 ln -s "$(which git)" "${GITRC_PATH:?}/bin/g"
 # This one happen when trying to quit an interactive git log but log fit the screen
 ln -s "$(which git)" "${GITRC_PATH:?}/bin/qg"
-
-# Creation fetch_all shortcut
-ln -s "$(pwd)/scripts/fetch_all.sh" "${GITRC_PATH:?}/bin/fall"
-
-ln -s "$(pwd)/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
-ln -s "$(pwd)/scripts/git-checkbr.sh" "${GITRC_PATH:?}/bin/git-checkbr"
-
-# git recursive
-ln -s "$(pwd)/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
+ln -s "${GITRC_PATH:?}/scripts/fetch_all.sh" "${GITRC_PATH:?}/bin/fall"
+ln -s "${GITRC_PATH:?}/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
+ln -s "${GITRC_PATH:?}/scripts/git-checkbr.sh" "${GITRC_PATH:?}/bin/git-chkbr"
+ln -s "${GITRC_PATH:?}/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
 
 echo "INF Updating personal gitrc to ~/.bashrc"
 
@@ -85,7 +81,6 @@ endPattern="### END .GITRC CONFIGURATION ###"
 
 # Remove previous run
 sed -i "/${startPattern}/,/${endPattern}/d" ~/.bashrc
-
 {
     echo "${startPattern}"
     echo "# DO NOT MODIFY THIS PART MANUALLY"

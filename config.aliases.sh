@@ -11,14 +11,14 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.st '!LANG=en_US git status -sb'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.f '!LANG=en_US git fetch --all --prune --tags --recurse-submodules --jobs=4'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.co '!LANG=en_US git checkout'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cob '!LANG=en_US git checkout -b'
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.commit '!LANG=en_US git commit ${SIGN_SWITCH}'
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ci '!LANG=en_US git commit ${SIGN_SWITCH}'
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cim '!LANG=en_US git commit ${SIGN_SWITCH} -m'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ci '!LANG=en_US git commit'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cim '!LANG=en_US git commit -m'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.cp '!LANG=en_US git cherry-pick'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.br '!LANG=en_US git branch -vv'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.amend '!LANG=en_US git commit --amend'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.pop '!LANG=en_US git stash pop'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.clean 'clean -xdf'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ri 'rebase --preserve-merges -i'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.rc 'rebase --continue'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ra 'rebase --abort'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.bis 'bisect start'
@@ -30,7 +30,7 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mysha1 '!LANG=en_US git rev-parse -
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mybranch '!LANG=en_US git rev-parse --abbrev-ref HEAD'
 
 # DIFF / MERGE
-if test ${GIT_GRAPHICAL} -eq 1
+if test "${GIT_GRAPHICAL}" -eq 1
 then
   # Use MELD as diff
   git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.dd 'difftool'
@@ -53,7 +53,7 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.unadd '!LANG=en_US git reset HEAD'
 # LOG
 # Log One line Truncated
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgf '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%<(30,trunc)%s%Creset" --all --patience'
-# Log One line filtered 
+# Log One line filtered on current HEAD
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%s%Creset" --patience'
 # Log One line 
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lg '!LANG=en_US git ll --all'
@@ -64,10 +64,10 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgg '!LANG=en_US git ll --all --gre
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.l '!LANG=en_US git lg --simplify-by-decoration'
 
 # Log verbose
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --color=auto --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset "'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset "'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgl '!LANG=en_US git lll --all'
 # Log verbose with grep on comment
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lllg '!LANG=en_US git log --color=auto --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset " --all --grep'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lllg '!LANG=en_US git lll --all --grep'
 
 # TESTS
 # Display current graph to be used in documents/presentation

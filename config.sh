@@ -14,6 +14,7 @@ then
   # AUTH
   git config ${GIT_GLOBAL_CONFIG_SWITCH} user.name "${GIT_USER_NAME}"
   git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.https://github.com.username ${GIT_CRED_GITHUB_NAME:-GIT_CRED_DEFAULT_NAME}
+  git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.https://gitlab.com.username ${GIT_CRED_GITLAB_NAME:-GIT_CRED_DEFAULT_NAME}
   git config ${GIT_GLOBAL_CONFIG_SWITCH} credential.username "${GIT_CRED_DEFAULT_NAME:-$GIT_USER_NAME}"
   # because credential is cumulative, reset all occurrences before adding new cache
   git config ${GIT_GLOBAL_CONFIG_SWITCH} --unset-all credential.helper 
