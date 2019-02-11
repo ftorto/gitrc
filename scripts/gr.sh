@@ -14,6 +14,7 @@ USAGE(){
     exit 0
 }
 
+max_parallel_jobs=4
 FILE_EDIT=false
 NO_HEADER=false
 while test $# -gt 0 
@@ -31,6 +32,12 @@ do
             ;;
         -p|--parallel)
             parallel=true
+            max_parallel_jobs=2000
+            ;;
+        -P)
+            parallel=true
+            max_parallel_jobs=$2
+            shift
             ;;
         -M|--not-match)
             notmatch=$2
@@ -122,11 +129,14 @@ do
     if grep "PARALLEL_MODE:1" "${cmd_file}" > /dev/null 2>&1
     then 
         "${cmd_file}" parallel &
-    else 
+    else
         "${cmd_file}"
     fi
     
     popd > /dev/null;
+
+    # Wait for job queue decreases
+    while [ $(jobs | wc -l) -ge $max_parallel_jobs ] ; do sleep 1 ; done
 done
 wait
 echo "script applied is located here : ${cmd_file}"

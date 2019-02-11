@@ -70,7 +70,7 @@ ln -s "$(which git)" "${GITRC_PATH:?}/bin/g"
 ln -s "$(which git)" "${GITRC_PATH:?}/bin/qg"
 ln -s "${GITRC_PATH:?}/scripts/fetch_all.sh" "${GITRC_PATH:?}/bin/fall"
 ln -s "${GITRC_PATH:?}/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
-ln -s "${GITRC_PATH:?}/scripts/git-checkbr.sh" "${GITRC_PATH:?}/bin/git-chkbr"
+ln -s "${GITRC_PATH:?}/scripts/git-chkbr.sh" "${GITRC_PATH:?}/bin/git-chkbr"
 ln -s "${GITRC_PATH:?}/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
 
 echo "INF Updating personal gitrc to ~/.bashrc"
