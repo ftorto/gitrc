@@ -25,6 +25,7 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.bis 'bisect start'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.good 'bisect good'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.bad 'bisect bad'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.bir 'bisect reset'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.changes "log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status"
 
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mysha1 '!LANG=en_US git rev-parse --short HEAD'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.mybranch '!LANG=en_US git rev-parse --abbrev-ref HEAD'
@@ -54,20 +55,16 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.unadd '!LANG=en_US git reset HEAD'
 # Log One line Truncated
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgf '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%<(30,trunc)%s%Creset" --all --patience'
 # Log One line filtered on current HEAD
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%s%Creset" --patience'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%s%Creset %C(dim yellow)%N%Creset" --patience'
 # Log One line 
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lg '!LANG=en_US git ll --all'
-# Log One line with grep on comment
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgg '!LANG=en_US git ll --all --grep'
 
 # Log only important commits One line
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.l '!LANG=en_US git lg --simplify-by-decoration'
 
 # Log verbose
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""%C(white)%s%n%b%Creset "'
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lll '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(auto)%D%Creset%n""   %C(dim white)Author    %C(green)%aN <%aE>%Creset %C(bold cyan)%ai%Creset %C(bold green)(%ar)%Creset%n""   %C(dim white)Committer %C(dim white)%cN <%cE>%Creset %ci (%cr)%Creset %n""   Sign      %C(dim white)%G? %GS %GK %Creset %n""   Notes     %C(dim yellow)%N%Creset %n""%C(white)%s%n%b%Creset "'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lgl '!LANG=en_US git lll --all'
-# Log verbose with grep on comment
-git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lllg '!LANG=en_US git lll --all --grep'
 
 # TESTS
 # Display current graph to be used in documents/presentation
