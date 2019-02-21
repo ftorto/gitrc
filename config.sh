@@ -62,6 +62,10 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} core.autocrlf input
 # VIZ
 # Colorize outputs
 git config ${GIT_GLOBAL_CONFIG_SWITCH} color.ui true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} color.branch true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} color.diff true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} color.grep true
+git config ${GIT_GLOBAL_CONFIG_SWITCH} color.pager true
 # Use VI as default editor
 git config ${GIT_GLOBAL_CONFIG_SWITCH} core.editor vi
 
@@ -83,6 +87,9 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.algorithm histogram
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.compactionHeuristic true
 # Check for renames/moves
 git config ${GIT_GLOBAL_CONFIG_SWITCH} diff.renames true
+
+# Display
+git config ${GIT_GLOBAL_CONFIG_SWITCH} core.whitespace -trailing-space,-indent-with-non-tab,-tab-in-indent
 
 # Git flow
 git config ${GIT_GLOBAL_CONFIG_SWITCH} gitflow.feature.finish.no-ff true
