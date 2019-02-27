@@ -32,12 +32,7 @@ do
             ;;
         -p|--parallel)
             parallel=true
-            max_parallel_jobs=2000
-            ;;
-        -P)
-            parallel=true
-            max_parallel_jobs=$2
-            shift
+            max_parallel_jobs=10
             ;;
         -M|--not-match)
             notmatch=$2

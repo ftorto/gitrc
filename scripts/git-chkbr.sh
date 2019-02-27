@@ -8,8 +8,27 @@ RED="\033[31m"
 YELLOW="\033[33m"
 OFF="\033[0m"
 
+
 currentBranch=$(git rev-parse --abbrev-ref HEAD)
 currentBranch=${1:-${currentBranch}}
+
+from_commit=${1}
+to_commit=${2:-${currentBranch}}
+
+
+# STEPS
+# - detect all branch paths (from first divergence to merge commit)
+# - for each branch path
+#   - guess the name of the branch by looking at: branch name in last commit, merge commit comment
+#   - extract the artifact id (number)
+#   - for each commit
+#     - detect "art #XXX" in commit
+#     - detect "^Changelog: \((MIN|FIX|MAJ|BRK)\) .+? \(#[0-9]+.*?\)$"
+#     - scan for mispell
+#   - notify for each commit without art
+#   - notify if branch path doesn't contain a Changelog entry
+
+
 
 branchNumber=$(echo ${currentBranch} | sed 's@.*/@@')
 echo "Working on branch ${currentBranch}"
