@@ -42,6 +42,10 @@ fi
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.diffc 'diff --cached'
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ma 'merge --abort'
 
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.base 'merge-base'
+
+
+
 # List the impacted files
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.impacted 'diff --name-only'
 
