@@ -18,17 +18,7 @@ test ${exit_flag} -eq 1 && exit 1
 # All configuration will be global
 export GIT_GLOBAL_CONFIG=1
 
-# Checking minimum git version available
-git --version
-if test -z "$(ls /etc/apt/sources.list.d/git*)" > /dev/null
-then
-    read -p "Install latest git sources (PPA) [Yn] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        sudo apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install git -y
-    fi
-fi
+./upgrade_git.sh
 
 GITRC_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export GITRC_PATH
