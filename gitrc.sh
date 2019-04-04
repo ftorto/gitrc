@@ -1,15 +1,19 @@
 #!/bin/bash
 
-# Autocomplete
-source "${GITRC_PATH}/scripts/git-completion.bash"
-source "${GITRC_PATH}/scripts/git-flow-completion.bash"
-__git_complete g _git
-__git_complete gti _git
-__git_complete qg _git
-__git_complete gf _git_flow
 
-# Prompt
-source "${GITRC_PATH}/git_ps1.sh"
+if [[ "$SHELL" =~ bash ]]
+then
+  # Autocomplete for bash
+  source "${GITRC_PATH}/scripts/git-completion.bash"
+  source "${GITRC_PATH}/scripts/git-flow-completion.bash"
+  __git_complete g _git
+  __git_complete gti _git
+  __git_complete qg _git
+  __git_complete gf _git_flow
+
+  # Prompt
+  source "${GITRC_PATH}/git_ps1.sh"
+fi
 
 # git in English
 alias git='LANGUAGE=en_US.UTF-8 git'
@@ -60,7 +64,6 @@ alias gfhf='git flow hotfix finish'
 alias gfhph='git flow hotfix publish'
 alias gfhpl='git flow hotfix pull'
 alias gfht='git flow hotfix track'
-
 
 export PATH=$PATH:${GITRC_PATH}/bin
 

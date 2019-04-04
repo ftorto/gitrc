@@ -63,21 +63,27 @@ ln -s "${GITRC_PATH:?}/scripts/stamp.sh" "${GITRC_PATH:?}/bin/git-stamp"
 ln -s "${GITRC_PATH:?}/scripts/git-chkbr.sh" "${GITRC_PATH:?}/bin/git-chkbr"
 ln -s "${GITRC_PATH:?}/scripts/gr.sh" "${GITRC_PATH:?}/bin/gr"
 
-echo "INF Updating personal gitrc to ~/.bashrc"
+function source_gitrc(){
+    profile_file=${1:-"~/.bashrc"}
+    echo "INF Updating personal gitrc to  ${profile_file}"
 
-# Define patterns to identify the .gitrc configuration part
-startPattern="### BEGIN .GITRC CONFIGURATION ###"
-endPattern="### END .GITRC CONFIGURATION ###"
+    # Define patterns to identify the .gitrc configuration part
+    startPattern="### BEGIN .GITRC CONFIGURATION ###"
+    endPattern="### END .GITRC CONFIGURATION ###"
 
-# Remove previous run
-sed -i "/${startPattern}/,/${endPattern}/d" ~/.bashrc
-{
-    echo "${startPattern}"
-    echo "# DO NOT MODIFY THIS PART MANUALLY"
-    echo "# Sourcing personal git configuration"
-    echo "export GITRC_PATH=${GITRC_PATH}"
-    echo "export GPG_TTY=\$(tty)"
-    echo "source \"${GITRC_PATH}/gitrc.sh\""
-    echo "${endPattern}"
-} >> ~/.bashrc
+    sed -i "/${startPattern}/,/${endPattern}/d" ${profile_file}
+    {
+        echo "${startPattern}"
+        echo "# DO NOT MODIFY THIS PART MANUALLY"
+        echo "# Sourcing personal git configuration"
+        echo "export GITRC_PATH=${GITRC_PATH}"
+        echo "source \"${GITRC_PATH}/gitrc.sh\""
+        echo "${endPattern}"
+    } >> ${profile_file}
+}
+
+profile_rc=~/.bashrc
+[[ "$SHELL" =~ zsh ]] && profile_rc=~/.zshrc
+source_gitrc ${profile_rc}
+
 echo "INF Git install completed"
