@@ -63,6 +63,8 @@ git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.ll '!LANG=en_US git log --graph --f
 # Log One line 
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.lg '!LANG=en_US git ll --all'
 
+git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.l2 '!LANG=en_US git log --graph --format=format:"%C(bold blue)%h%Creset %C(bold green)%>(8,trunc)%ar%Creset%C(dim yellow)%G?%Creset %C(dim white)%<(8,mtrunc)%an%Creset %C(auto)%D%Creset %C(white)%<(30,trunc)%s%Creset%n%C(dim white)%b%Creset" --all --patience'
+
 # Log only important commits One line
 git config ${GIT_GLOBAL_CONFIG_SWITCH} alias.l '!LANG=en_US git lg --simplify-by-decoration'
 
